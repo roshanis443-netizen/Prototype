@@ -1,0 +1,303 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Vajra Governance</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#0f1c3f;font-size:13px}
+button,select,input{font-family:inherit;font-size:13px;color:#0f1c3f}
+button{cursor:pointer}
+.nav{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:0;background:none;border-radius:8px;font-weight:500;color:#44506b;text-align:left}
+.nav:hover{background:#f0f3f8}.nav.on{background:#e8edff;color:#1f3bc4;font-weight:600}
+.nav svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card{background:#fff;border:1px solid #e3e8ef;border-radius:10px}
+.btn{border:1px solid #d5dbe6;background:#fff;border-radius:8px;padding:7px 12px;font-weight:500}
+.btn:hover{background:#f5f7fa}.btn.pri{background:#1f3bc4;border-color:#1f3bc4;color:#fff}.btn.pri:hover{background:#1a31a5}
+.btn.dng{background:#c4311f;border-color:#c4311f;color:#fff}
+.sel,.inp{border:1px solid #d5dbe6;background:#fff;border-radius:8px;padding:7px 10px;height:34px;box-sizing:border-box}
+.seg{display:flex;border:1px solid #d5dbe6;border-radius:8px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:7px 14px;font-weight:500;color:#44506b}.seg button.on{background:#0f1c3f;color:#fff}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#5b6780}
+.g{display:grid;grid-template-columns:36px minmax(250px,2.6fr) 72px 100px 86px 104px 76px 76px 92px 76px 76px 92px;align-items:center;column-gap:8px;padding:0 12px;box-sizing:border-box}
+.hd{height:36px;background:#f7f9fc;border-bottom:1px solid #e3e8ef;position:sticky;top:0}
+.sb{border:0;background:none;padding:0;font-size:11px;font-weight:600;color:#5b6780;text-transform:uppercase;letter-spacing:.03em}
+.sb:hover{color:#0f1c3f}.r{text-align:right}
+.row{min-height:38px;border-bottom:1px solid #eef1f6}.row:hover{background:#fafbfd}
+.row.sc{background:#eef2ff}.row.ad{background:#fcfaff;min-height:34px}.row.ad.sa{background:#f3ecff}
+.nm{border:0;background:none;padding:0;display:flex;align-items:center;gap:6px;min-width:0;text-align:left;font-weight:500;width:100%}
+.nm span.t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.pos{color:#0d7a4a;font-weight:600}.neg{color:#c4311f;font-weight:600}.neu{color:#5b6780}
+.bd{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
+.s-Active{background:#e3f6ec;color:#0b6b41}.s-Learning{background:#e6ecff;color:#2740b8}.s-Paused{background:#fdf1dc;color:#8a5208}.s-Ended{background:#eceff4;color:#4a566e}
+.v-Critical{background:#fde6e3;color:#a7261a}.v-High{background:#fdeadb;color:#9a4509}.v-Medium{background:#fdf1dc;color:#8a5208}
+.dq{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#44506b;white-space:nowrap}.dq i{width:7px;height:7px;border-radius:50%;background:#0d7a4a}
+.dq.Low{color:#8a5208}.dq.Low i{background:#d98a14}.dq.Delayed i{background:#6b7a99}
+.tag{font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;background:#fdf1dc;color:#8a5208;white-space:nowrap}
+input[type=checkbox]{width:15px;height:15px;accent-color:#1f3bc4;margin:0}input.ac{accent-color:#7a3fd1}
+.kp{padding:14px 16px;flex:1 1 200px}.kv{font-size:24px;font-weight:700;margin-top:4px}.ks{font-size:12px;color:#5b6780;margin-top:2px}
+.ov{position:fixed;inset:0;background:rgba(15,28,63,.4);display:flex;align-items:center;justify-content:center;z-index:50}
+.row.end{background:#f1f3f7;color:#5b6780}.row.end .t{font-style:italic}.nav.on{background:#e8edff}input:disabled,button:disabled{cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #1f3bc4;outline-offset:1px}
+</style></head><body><div id="root"></div>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script>const RAW = [
+['Summer_Cooling_Meta','M','Traffic','Active',184320,1.42,2.31,14.8,9.6,'Good'],
+['AC_Performance_Search','G','Conversions','Active',226540,3.12,3.05,22.4,23.1,'Good'],
+['Inverter_AC_Launch_Meta','M','Awareness','Active',312800,0.92,1.28,8.4,7.1,'Good'],
+['Split_AC_Brand_Search','G','Conversions','Active',148900,3.41,3.22,18.9,19.8,'Good'],
+['Cooler_Sale_Reels_Meta','M','Sales','Active',96450,1.86,1.52,12.3,14.0,'Good'],
+['Window_AC_Retarget_Meta','M','Conversions','Active',74200,2.44,2.98,16.7,13.9,'Good'],
+['Install_Service_Leads_Google','G','Leads','Active',61300,2.05,1.71,31.2,36.4,'Good'],
+['Festive_Offer_Carousel_Meta','M','Sales','Active',258900,1.31,1.77,19.4,15.2,'Good'],
+['AC_Shopping_Feed_Google','G','Sales','Active',189750,1.64,1.58,26.8,27.1,'Delayed'],
+['Competitor_Conquest_Search','G','Traffic','Active',43800,2.78,3.44,34.5,28.9,'Good'],
+['Lookalike_Buyers_Meta','M','Conversions','Learning',38900,1.12,1.18,15.9,15.1,'Good'],
+['Smart_Home_Cooling_Meta','M','Awareness','Learning',28400,0.98,1.05,7.2,7.5,'Good'],
+['PMax_AC_Categories_Google','G','Sales','Learning',52100,2.21,2.0,21.0,22.5,'Good'],
+['Monsoon_Clearance_Meta','M','Sales','Paused',18750,1.45,1.61,15.6,14.2,'Good'],
+['Dealer_Locator_Google','G','Traffic','Paused',12400,1.92,1.85,9.8,10.1,'Good'],
+['Winter_Heater_Test_Meta','M','Traffic','Paused',9200,1.18,1.4,11.3,10.0,'Good'],
+['Hot_Summer_Video_Meta','M','Awareness','Ended',134600,0.86,0.97,6.4,6.9,'Good'],
+['Display_Remarketing_Google','G','Awareness','Ended',77300,0.94,1.02,7.9,7.4,'Good'],
+['Pune_Geo_Test_Meta','M','Leads','Active',4850,2.9,1.7,17.2,21.0,'Low data'],
+['Kids_Room_AC_Meta','M','Traffic','Active',3920,1.6,2.4,13.1,9.8,'Low data'],
+['Gurgaon_Dealer_Search','G','Leads','Active',5610,3.3,2.6,28.0,24.4,'Low data'],
+['Premium_Gold_Display_Google','G','Awareness','Active',2740,1.05,1.55,8.8,7.2,'Low data'],
+['Brand_Defence_Search','G','Conversions','Active',119800,3.48,3.5,12.5,12.7,'Good'],
+['Influencer_Spotlight_Meta','M','Awareness','Active',207400,1.07,1.19,9.1,8.8,'Good'],
+['EMI_Offer_Leads_Meta','M','Leads','Active',143200,1.73,2.26,24.6,19.3,'Good'],
+['Generic_AC_Search_Google','G','Traffic','Active',98650,2.36,2.4,20.2,19.6,'Delayed'],
+['Wishlist_Retarget_Meta','M','Conversions','Active',67400,2.59,2.12,11.4,13.8,'Good'],
+['YouTube_Bumper_Google','G','Awareness','Active',164300,0.81,0.94,6.2,6.0,'Good'],
+['Energy_Saver_Search_Google','G','Leads','Active',85900,2.88,2.35,23.9,27.5,'Good'],
+['Diwali_Dhamaka_Meta','M','Sales','Active',291500,1.54,2.02,16.9,13.3,'Good']];
+const CAMPS = RAW.map((r,i)=>({i,id:'c'+i,name:'R'+(167+i)+'/'+(r[1]==='M'?'OT':'SA')+'/24/'+(998274+i)+'/0'+(i%4)+'_'+r[0],plat:r[1]==='M'?'Meta':'Google',obj:r[2],status:r[3],spend:r[4],ctr:r[5],pctr:r[6],cpc:r[7],pcpc:r[8],dq:r[9],pspend:r[4]*(0.92+((i*7)%17)/100)}));
+const AS_N = {Meta:['Broad_IN_25-45','Lookalike_1pct','Retarget_30d'],Google:['Exact_Match_Core','Phrase_Generic','Competitor_Terms']};
+const cl=(v,a,b)=>Math.min(b,Math.max(a,v));
+CAMPS.forEach(c=>{const n=c.i%3===0?2:3,w=n===2?[.6,.4]:[.5,.3,.2];c.adsets=w.map((x,k)=>({id:c.id+'a'+k,name:AS_N[c.plat][k]+'_'+(c.i+1)+'0'+k,k,w:x,status:c.status==='Active'&&c.i%5===2&&k===2?'Paused':c.status,ctr:cl(c.ctr*[.9,1.06,1.12][k],.8,3.5),pctr:cl(c.pctr*[1.06,1,.94][k],.8,3.5),cpc:cl(c.cpc*[1.08,.97,.92][k],6,40),pcpc:cl(c.pcpc*[.96,1,1.05][k],6,40)}))});
+
+const inr=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const ar=v=>(v>0.05?'▲ ':v<-0.05?'▼ ':'')+Math.abs(v).toFixed(1)+'%';
+const iso=d=>d.toISOString().slice(0,10);
+const add=(s,n)=>{const d=new Date(s+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return iso(d)};
+const diff=(a,b)=>Math.round((new Date(a+'T00:00:00Z')-new Date(b+'T00:00:00Z'))/864e5);
+const fd=s=>new Date(s+'T00:00:00Z').toLocaleDateString('en-IN',{day:'numeric',month:'short',timeZone:'UTC'});
+
+const {useState,useContext,useRef,useEffect,createContext}=React;
+const html=htm.bind(React.createElement);
+const Ctx=createContext();
+const F0={platform:'All',objective:'All',status:'All',perf:'All',dq:'All',q:''};
+CAMPS.forEach(c=>{if(c.dq==='Delayed')c.dq='Data incomplete';c.adsets.forEach(a=>{a.cid=c.id;a.ci=c.i;a.spend=c.spend*a.w;a.pspend=c.pspend*a.w;a.dq=c.dq;a.obj=c.obj;a.plat=c.plat})});
+CAMPS[12].adsets=[];
+const calc=(e,f,pf,nz)=>{if(!e.spend)return{nodata:true};const spend=e.spend*f,pspend=e.pspend*pf,ctr=e.ctr*(1+nz),cpc=e.cpc*(1-nz),clicks=spend/cpc,imps=clicks/(ctr/100),pclicks=pspend/e.pcpc,pimps=pclicks/(e.pctr/100);return{spend,pspend,ctr,cpc,pctr:e.pctr,pcpc:e.pcpc,clicks,imps,pclicks,pimps,cc:(ctr-e.pctr)/e.pctr*100,pc:(cpc-e.pcpc)/e.pcpc*100}};
+const agg=ms=>{ms=ms.filter(m=>!m.nodata);if(!ms.length)return{nodata:true};const s=k=>ms.reduce((a,m)=>a+m[k],0),spend=s('spend'),pspend=s('pspend'),clicks=s('clicks'),imps=s('imps'),pclicks=s('pclicks'),pimps=s('pimps'),ctr=clicks/imps*100,pctr=pclicks/pimps*100,cpc=spend/clicks,pcpc=pspend/pclicks;return{spend,pspend,clicks,imps,pclicks,pimps,ctr,pctr,cpc,pcpc,cc:(ctr-pctr)/pctr*100,pc:(cpc-pcpc)/pcpc*100}};
+const n0=v=>Math.round(v).toLocaleString('en-IN');
+const cc=(v,good)=>Math.abs(v)<.5?'neu':(good>0?v>0:v<0)?'pos':'neg';
+const sevOf=(dq,m,st)=>{if(m.nodata)return null;const w=Math.max(-m.cc,m.pc);if(!(st==='Active'||st==='Learning')||w<8)return null;let s=w>=30?'Critical':w>=15?'High':'Medium';if(st==='Learning'||dq==='Low data')s='Medium';return s};
+const DQC=d=>d==='Good'?'':d==='Low data'?'Low':'Delayed';
+function Cb({checked,indet,onChange,label,cls}){const r=useRef();useEffect(()=>{if(r.current)r.current.indeterminate=!!indet&&!checked},[indet,checked]);return html`<input ref=${r} className=${cls||''} type="checkbox" aria-label=${label} checked=${!!checked} onChange=${onChange}/>`}
+const Tag=({dq})=>dq==='Good'?null:html`<span className="tag">${dq}</span>`;
+const Cells=({m})=>m.nodata?html`<${React.Fragment}>${[0,1,2,3,4,5,6].map(i=>html`<div key=${i} className="r neu">—</div>`)}<//>`:html`<${React.Fragment}><div className="r">₹${n0(m.spend)}</div><div className="r">${m.ctr.toFixed(2)}%</div><div className="r neu">${m.pctr.toFixed(2)}%</div><div className=${'r '+cc(m.cc,1)}>${ar(m.cc)}</div><div className="r">₹${m.cpc.toFixed(2)}</div><div className="r neu">₹${m.pcpc.toFixed(2)}</div><div className=${'r '+cc(m.pc,-1)}>${ar(m.pc)}</div><//>`;
+const Status=({s})=>html`<span className=${'bd s-'+s}>${s}</span>`;
+function Row({r}){const X=useContext(Ctx),{c,m,dq,st}=r,open=!!X.exp[c.id],nSel=c.adsets.filter(a=>X.selA[a.id]).length;
+return html`<div>
+<div id=${'r-'+c.id} className=${'g row '+(X.selC[c.id]?'sc ':'')+(st==='Ended'?'end':'')}>
+<div><${Cb} checked=${X.selC[c.id]} indet=${nSel>0} onChange=${()=>X.tg(X.setSelC,c.id)} label=${'Select campaign '+c.name}/></div>
+<div style=${{display:'flex',alignItems:'center',gap:6,minWidth:0}}><button className="nm" title=${c.name} aria-expanded=${open} onClick=${()=>X.tg(X.setExp,c.id)}><span style=${{color:'#5b6780',width:12}}>${open?'▾':'▸'}</span><span className="t">${c.name}</span></button><${Tag} dq=${dq}/></div>
+<div>${c.plat}</div><div>${c.obj}</div><div><${Status} s=${st}/></div><${Cells} m=${m}/></div>
+${open&&html`<div>
+<div style=${{padding:'6px 12px 6px 58px',background:'#fcfaff',fontSize:12,color:'#5b6780',display:'flex',gap:12,alignItems:'center'}}><span>${c.adsets.length} ad set(s)</span><button className="btn" style=${{padding:'2px 8px'}} onClick=${()=>X.setReview(c.id)}>Review campaign</button></div>
+${c.adsets.length===0&&html`<div className="neu" style=${{padding:'10px 58px',background:'#fcfaff',borderBottom:'1px solid #eef1f6'}}>No ad sets available · ad-set-level monitoring is disabled for this campaign.</div>`}
+${c.adsets.map(a=>{const am=X.mt(a);return html`<div key=${a.id} className=${'g row ad '+(X.selA[a.id]?'sa':'')}><div></div>
+<div style=${{display:'flex',alignItems:'center',gap:8,minWidth:0,paddingLeft:18}}><${Cb} cls="ac" checked=${X.selA[a.id]} onChange=${()=>X.tg(X.setSelA,a.id)} label=${'Select ad set '+a.name}/><span className="t" style=${{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}} title=${a.name}>${a.name}</span></div>
+<div className="neu">${c.plat}</div><div className="neu">Ad set</div><div><${Status} s=${a.status}/></div><${Cells} m=${am}/></div>`})}</div>`}
+</div>`}
+function Controls(){const X=useContext(Ctx),{D,setD,F,setF}=X;
+const preset=e=>{const v=e.target.value;if(v==='custom')return setD({...D,preset:v});const n=+v,fr=add('2026-10-30',-(n-1)),pt=add(fr,-1);setD({preset:v,cFrom:fr,cTo:'2026-10-30',pTo:pt,pFrom:add(pt,-(n-1))})};
+const dt=k=>e=>e.target.value&&setD({...D,[k]:e.target.value,preset:'custom'});
+return html`<div style=${{display:'flex',flexWrap:'wrap',gap:10,justifyContent:'flex-end',alignItems:'center'}}>
+<select className="sel" aria-label="Account" value=${X.acct} onChange=${e=>X.setAcct(e.target.value)}><option>CoolNest ACs</option><option>CoolNest Retail (new)</option></select>
+<div className="seg">${['All','Meta','Google'].map(p=>html`<button key=${p} className=${F.platform===p?'on':''} onClick=${()=>setF({...F,platform:p})}>${p}</button>`)}</div></div>`}
+function Dates(){const X=useContext(Ctx),{D,setD}=X;
+const preset=e=>{const v=e.target.value;if(v==='custom')return setD({...D,preset:v});const n=+v,fr=add('2026-10-30',-(n-1)),pt=add(fr,-1);setD({preset:v,cFrom:fr,cTo:'2026-10-30',pTo:pt,pFrom:add(pt,-(n-1))})};
+const dt=k=>e=>e.target.value&&setD({...D,[k]:e.target.value,preset:'custom'});
+return html`<div className="card" style=${{marginTop:18,padding:'12px 16px',display:'flex',flexWrap:'wrap',gap:'12px 28px',alignItems:'center'}}>
+<div style=${{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}><span className="lbl">Current period</span><select className="sel" aria-label="Preset" value=${D.preset} onChange=${preset}><option value="7">Last 7 days</option><option value="14">Last 14 days</option><option value="30">Last 30 days</option><option value="custom">Custom</option></select>
+<input className="inp" type="date" aria-label="Current from" value=${D.cFrom} onChange=${dt('cFrom')}/><span className="neu">to</span><input className="inp" type="date" aria-label="Current to" value=${D.cTo} onChange=${dt('cTo')}/></div>
+<div style=${{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}><span className="lbl">Previous period</span><input className="inp" type="date" aria-label="Previous from" value=${D.pFrom} onChange=${dt('pFrom')}/><span className="neu">to</span><input className="inp" type="date" aria-label="Previous to" value=${D.pTo} onChange=${dt('pTo')}/></div>
+<span className="neu" style=${{marginLeft:'auto'}}>${X.cLabel} vs ${X.pLabel}</span></div>`}
+const Head=({t,s})=>{return html`<div style=${{display:'flex',flexWrap:'wrap',gap:16,justifyContent:'space-between',alignItems:'flex-start'}}><div><h1 style=${{margin:0,fontSize:26,letterSpacing:'-.02em'}}>${t}</h1><p style=${{margin:'4px 0 0',color:'#5b6780',fontSize:14}}>${s}</p></div><${Controls}/></div>`};
+function Kpis(){const X=useContext(Ctx),k=X.k;const it=[['Total campaigns',k.total,k.totalSub],['Active campaigns',k.active,k.activeSub],['Needing attention',k.attn,'CTR or CPC worse by 8%+','neg'],['Active alerts',k.alerts,X.alerts.length+' configured'],['Total spend',k.spend,k.spendSub]];
+return html`<div style=${{display:'flex',flexWrap:'wrap',gap:12,marginTop:14}}>${it.map(i=>html`<div key=${i[0]} className="card kp"><div className="lbl">${i[0]}</div><div className=${'kv '+(i[3]||'')}>${i[1]}</div><div className="ks">${i[2]}</div></div>`)}</div>`}
+function Attention(){const X=useContext(Ctx);return html`<div className="card" style=${{marginTop:16,overflow:'hidden'}}>
+<div style=${{padding:'14px 16px',display:'flex',justifyContent:'space-between',borderBottom:'1px solid #e3e8ef'}}><div><span style=${{fontSize:15,fontWeight:700}}>Needs attention</span> <span className="neu">· largest negative changes first</span></div><span className="neu">Showing ${Math.min(6,X.attn.length)} of ${X.attn.length}</span></div>
+${X.attn.length===0&&html`<div className="neu" style=${{padding:24,textAlign:'center'}}>Nothing needs attention for this platform and period.</div>`}
+${X.attn.slice(0,6).map(a=>{const ctr=-a.m.cc>=a.m.pc;return html`<div key=${a.c.id} style=${{display:'grid',gridTemplateColumns:'84px minmax(200px,2.4fr) 150px 90px 120px 90px',gap:12,alignItems:'center',padding:'9px 16px',borderBottom:'1px solid #eef1f6'}}>
+<span className=${'bd v-'+a.sev} style=${{justifySelf:'start'}}>${a.sev}</span><span style=${{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',fontWeight:500}} title=${a.c.name}>${a.c.name}</span>
+<span><span className="neu">${ctr?'CTR':'CPC'}</span> <span className="neg">${ar(ctr?a.m.cc:a.m.pc)}</span></span><${Status} s=${a.st}/><span className=${'dq '+DQC(a.dq)}><i></i>${a.dq}</span>
+<button className="btn" style=${{justifySelf:'end',padding:'4px 10px'}} onClick=${()=>X.setReview(a.c.id)}>Review</button></div>`})}</div>`}
+function TableCard(){const X=useContext(Ctx),{F,setF,rows,sort,setSort}=X;const S=(k)=>e=>setF({...F,[k]:e.target.value});
+const elig=rows.filter(r=>r.st!=='Ended'&&!r.m.nodata),nE=elig.filter(r=>X.selC[r.c.id]).length,all=elig.length>0&&nE===elig.length;
+const selAll=()=>X.setSelC(s=>{const o={...s};elig.forEach(r=>o[r.c.id]=!all);return o});
+const cols=[['name','Campaign'],['plat','Platform'],['obj','Objective'],['status','Status'],['spend','Spend','r'],['ctr','CTR','r'],['pctr','Prev CTR','r'],['cc','CTR chg','r'],['cpc','CPC','r'],['pcpc','Prev CPC','r'],['pc','CPC chg','r']];
+const opt=(a)=>a.map(o=>html`<option key=${o} value=${o}>${o}</option>`);
+return html`<div className="card" style=${{marginTop:16,overflow:'hidden'}}>
+<div style=${{padding:'12px 16px',display:'flex',flexWrap:'wrap',gap:10,alignItems:'center',borderBottom:'1px solid #e3e8ef'}}>
+<span style=${{fontSize:15,fontWeight:700,marginRight:6}}>Campaign performance</span>
+<input className="inp" type="search" placeholder="Search campaigns" aria-label="Search campaigns" value=${F.q} onChange=${S('q')} style=${{width:180}}/>
+<select className="sel" aria-label="Objective" value=${F.objective} onChange=${S('objective')}><option value="All">Objective: All</option>${opt(['Traffic','Conversions','Awareness','Leads','Sales'])}</select>
+<select className="sel" aria-label="Status" value=${F.status} onChange=${S('status')}><option value="All">Status: All</option>${opt(['Active','Learning','Paused','Ended'])}</select>
+<select className="sel" aria-label="Performance" value=${F.perf} onChange=${S('perf')}><option value="All">Performance: All</option><option value="sig">Significant decline (15%+)</option><option value="dec">Declining</option><option value="imp">Improving</option></select>
+<select className="sel" aria-label="Data quality" value=${F.dq} onChange=${S('dq')}><option value="All">Data quality: All</option>${opt(['Good','Low data','Data incomplete','No data'])}</select>
+<button className="btn" onClick=${()=>setF(F0)}>Reset</button><span className="neu" style=${{marginLeft:'auto'}}>${rows.length} of ${X.camps.length} campaigns</span></div>
+<div style=${{overflowX:'auto'}}><div style=${{minWidth:1180}}>
+<div className="g hd"><div><${Cb} checked=${all} indet=${nE>0} onChange=${selAll} label="Select all eligible campaigns"/></div>${cols.map(c=>html`<div key=${c[0]} className=${c[2]||''}><button className="sb" onClick=${()=>setSort({k:c[0],d:sort.k===c[0]?-sort.d:1})}>${c[1]} ${sort.k===c[0]?(sort.d>0?'↑':'↓'):''}</button></div>`)}</div>
+${rows.map(r=>html`<${Row} key=${r.c.id} r=${r}/>`)}
+${rows.length===0&&html`<div className="neu" style=${{padding:36,textAlign:'center'}}>No campaigns match these filters.</div>`}</div></div></div>`}
+function Detail(){const X=useContext(Ctx),c=X.camps.find(x=>x.id===X.review);if(!c)return null;const r=X.all.find(a=>a.c.id===c.id),m=r.m;
+const row=(l,cur,pre,ch,cls)=>html`<div style=${{display:'grid',gridTemplateColumns:'1.2fr 1fr 1fr 1fr',padding:'8px 0',borderBottom:'1px solid #eef1f6'}}><span className="neu">${l}</span><span>${cur}</span><span className="neu">${pre}</span><span className=${cls}>${ch}</span></div>`;
+return html`<div className="ov" onClick=${()=>X.setReview(null)}><div className="card" style=${{width:620,maxWidth:'94vw',maxHeight:'88vh',overflow:'auto',padding:22}} onClick=${e=>e.stopPropagation()}>
+<div style=${{display:'flex',justifyContent:'space-between',gap:12}}><div><h2 style=${{margin:0,fontSize:17,wordBreak:'break-all'}}>${c.name}</h2><div style=${{marginTop:8,display:'flex',gap:8,alignItems:'center'}}><${Status} s=${r.st}/><span>${c.plat} · ${c.obj}</span><span className=${'dq '+DQC(r.dq)}><i></i>${r.dq}</span></div></div><button className="btn" onClick=${()=>X.setReview(null)}>Close</button></div>
+${m.nodata?html`<p className="neu" style=${{margin:'18px 0'}}>No delivery data for this period. Metrics and alerts are unavailable.</p>`:html`<div style=${{marginTop:16}}>
+<div className="lbl" style=${{display:'grid',gridTemplateColumns:'1.2fr 1fr 1fr 1fr'}}><span>Metric</span><span>Current</span><span>Previous</span><span>Change</span></div>
+${row('CTR',m.ctr.toFixed(2)+'%',m.pctr.toFixed(2)+'%',ar(m.cc),cc(m.cc,1))}${row('CPC','₹'+m.cpc.toFixed(2),'₹'+m.pcpc.toFixed(2),ar(m.pc),cc(m.pc,-1))}${row('Spend','₹'+n0(m.spend),'₹'+n0(m.pspend),ar((m.spend-m.pspend)/m.pspend*100),'neu')}${row('Clicks',n0(m.clicks),n0(m.pclicks),ar((m.clicks-m.pclicks)/m.pclicks*100),'neu')}${row('Impressions',n0(m.imps),n0(m.pimps),ar((m.imps-m.pimps)/m.pimps*100),'neu')}</div>`}
+${r.dq==='Low data'&&html`<p className="neu" style=${{fontSize:12}}>Low data: changes are low-confidence and this campaign never triggers alerts.</p>`}
+<div className="lbl" style=${{margin:'16px 0 6px'}}>Ad sets (${c.adsets.length})</div>${c.adsets.length===0&&html`<div className="neu">No ad sets available · ad-set-level monitoring is disabled.</div>`}
+${c.adsets.map(a=>{const am=X.mt(a);return html`<div key=${a.id} style=${{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'1px solid #eef1f6'}}><span>${a.name}</span><span><${Status} s=${a.status}/> ${!am.nodata&&html`<span className=${cc(am.cc,1)}> CTR ${ar(am.cc)}</span>`}</span></div>`})}
+<div style=${{marginTop:18,display:'flex',gap:8,justifyContent:'flex-end'}}><button className="btn pri" onClick=${()=>{X.setReview(null);X.setModal({t:'alert',pre:{tt:'campaign',tid:c.id}})}}>Create alert</button></div></div></div>`}
+function GroupModal(){const X=useContext(Ctx),[name,setName]=useState('');const cs=X.camps.filter(c=>X.selC[c.id]),as=X.adsAll.filter(a=>X.selA[a.id]);
+return html`<div className="ov"><div className="card" style=${{width:480,maxWidth:'94vw',padding:22}}><h2 style=${{margin:0,fontSize:17}}>Create group</h2>
+<label className="lbl" style=${{display:'block',margin:'14px 0 6px'}} htmlFor="gn">Group name</label><input id="gn" className="inp" style=${{width:'100%'}} value=${name} onChange=${e=>setName(e.target.value)} placeholder="e.g. Summer Cooling Push" autoFocus/>
+<div className="lbl" style=${{margin:'14px 0 6px'}}>${cs.length} campaign(s) · ${as.length} ad set(s)</div>
+<div style=${{maxHeight:200,overflow:'auto',border:'1px solid #e3e8ef',borderRadius:8}}>${cs.map(c=>html`<div key=${c.id} style=${{padding:'6px 10px',borderBottom:'1px solid #eef1f6',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>${c.name}</div>`)}${as.map(a=>html`<div key=${a.id} style=${{padding:'6px 10px',background:'#f3ecff',borderBottom:'1px solid #eef1f6'}}>Ad set · ${a.name}</div>`)}</div>
+<div style=${{display:'flex',justifyContent:'flex-end',gap:8,marginTop:18}}><button className="btn" onClick=${()=>X.setModal(null)}>Cancel</button><button className="btn pri" disabled=${!name.trim()} style=${{opacity:name.trim()?1:.5}} onClick=${()=>X.saveGroup(name.trim())}>Save group</button></div></div></div>`}
+const tName=(X,tt,id)=>tt==='group'?(X.groups.find(g=>g.id===id)||{}).name:tt==='adset'?(X.adsAll.find(a=>a.id===id)||{}).name:(X.camps.find(c=>c.id===id)||{}).name;
+function AlertModal(){const X=useContext(Ctx),ed=X.modal.edit?X.alerts.find(a=>a.id===X.modal.edit):null,p=ed||X.modal.pre||{};
+const [tt,setTt]=useState(p.tt||'campaign'),[tid,setTid]=useState(p.tid||''),[metric,setMetric]=useState(p.metric||'CTR'),[th,setTh]=useState(p.th||20),[email,setEmail]=useState(p.email||''),[err,setErr]=useState('');
+const opts=tt==='group'?X.groups.map(g=>[g.id,g.name]):tt==='adset'?X.adsAll.map(a=>[a.id,X.camps.find(c=>c.id===a.cid).name.slice(0,22)+' › '+a.name]):X.camps.map(c=>[c.id,c.name]);
+const tgt=opts.some(o=>o[0]===tid)?tid:'';
+const save=()=>{if(!tgt)return setErr('Choose what to monitor.');if(!(+th>0))return setErr('Enter a percentage above 0.');if(!/^\S+@\S+\.\S+$/.test(email))return setErr('Enter a valid email address.');X.saveAlert({id:ed?ed.id:'a'+Date.now(),tt,tid:tgt,metric,th:+th,email,on:ed?ed.on:true})};
+return html`<div className="ov"><div className="card" style=${{width:480,maxWidth:'94vw',padding:22}}><h2 style=${{margin:0,fontSize:17}}>${ed?'Edit alert':'Create alert'}</h2>
+<div style=${{display:'grid',gap:12,marginTop:14}}>
+<label><div className="lbl">Apply to</div><select className="sel" style=${{width:'100%'}} value=${tt} onChange=${e=>{setTt(e.target.value);setTid('')}}><option value="campaign">Campaign</option><option value="adset">Ad set</option><option value="group">Group</option></select></label>
+<label><div className="lbl">${tt==='group'?'Group':tt==='adset'?'Ad set':'Campaign'}</div><select className="sel" style=${{width:'100%'}} value=${tgt} onChange=${e=>setTid(e.target.value)}><option value="">Select…</option>${opts.map(o=>html`<option key=${o[0]} value=${o[0]}>${o[1]}</option>`)}</select></label>
+${tt==='adset'&&html`<div className="neu">Campaigns without ad sets can only be monitored at campaign level.</div>`}${tt==='group'&&X.groups.length===0&&html`<div className="neu">No groups yet. Select campaigns and create a group first.</div>`}
+<div style=${{display:'flex',gap:10,alignItems:'flex-end'}}><label><div className="lbl">Metric</div><select className="sel" value=${metric} onChange=${e=>setMetric(e.target.value)}><option>CTR</option><option>CPC</option></select></label>
+<label style=${{flex:1}}><div className="lbl">${metric==='CTR'?'CTR drops by more than (%)':'CPC rises by more than (%)'}</div><input className="inp" style=${{width:'100%'}} type="number" min="1" value=${th} onChange=${e=>setTh(e.target.value)}/></label></div>
+<label><div className="lbl">Email recipient</div><input className="inp" style=${{width:'100%'}} type="email" value=${email} onChange=${e=>setEmail(e.target.value)} placeholder="name@company.com"/></label>
+${err&&html`<div className="neg">${err}</div>`}</div>
+<div style=${{display:'flex',justifyContent:'flex-end',gap:8,marginTop:18}}><button className="btn" onClick=${()=>X.setModal(null)}>Cancel</button><button className="btn pri" onClick=${save}>Save alert</button></div></div></div>`}
+function GroupsView(){const X=useContext(Ctx),g=X.groups.find(x=>x.id===X.gid);
+if(g){const ms=X.gMembers(g),m=X.gm(g),me=X.gmEnded(g),nEnd=ms.filter(e=>e.status==='Ended').length,partial=[...new Set(ms.filter(e=>e.cid&&!ms.some(x=>x.id===e.cid)).map(e=>e.cid))].map(i=>X.camps.find(c=>c.id===i)).filter(c=>c.adsets.length>ms.filter(e=>e.cid===c.id).length),objs=[...new Set(ms.map(e=>e.obj))];const big=(l,v,pv,ch,cls)=>html`<div className="card kp"><div className="lbl">${l}</div><div className="kv">${v}</div><div className="ks">Prev ${pv} · <span className=${cls}>${ch}</span></div></div>`;
+return html`<div><button className="btn" onClick=${()=>X.setGid(null)}>← Back to groups</button>
+<div style=${{display:'flex',justifyContent:'space-between',alignItems:'center',margin:'16px 0 4px'}}><h1 style=${{margin:0,fontSize:24}}>${g.name}</h1><button className="btn" onClick=${()=>{X.setGroups(x=>x.filter(y=>y.id!==g.id));X.setGid(null);X.note('Group deleted')}}>Delete group</button></div>
+<p className="neu" style=${{margin:'0 0 8px'}}>${ms.length} member(s) · ${X.cLabel} vs ${X.pLabel}${objs.length>1?' · Mixed objectives: '+objs.join(', '):''}</p>
+${partial.length>0&&html`<p className="neu" style=${{margin:'0 0 8px'}}>Partial selection: only the chosen ad sets from ${partial.length} campaign(s) count toward these metrics.</p>`}${nEnd>0&&html`<p className="neu" style=${{margin:'0 0 8px'}}>Showing active performance only. ${nEnd} ended member(s) are reported separately below and excluded from alerts.</p>`}${m.nodata?html`<div className="card neu" style=${{padding:24}}>No performance data for the remaining members.</div>`:html`<div style=${{display:'flex',flexWrap:'wrap',gap:12}}>${big('Spend','₹'+n0(m.spend),'₹'+n0(m.pspend),ar((m.spend-m.pspend)/m.pspend*100),'neu')}${big('Clicks',n0(m.clicks),n0(m.pclicks),ar((m.clicks-m.pclicks)/m.pclicks*100),'neu')}${big('Impressions',n0(m.imps),n0(m.pimps),ar((m.imps-m.pimps)/m.pimps*100),'neu')}${big('CTR',m.ctr.toFixed(2)+'%',m.pctr.toFixed(2)+'%',ar(m.cc),cc(m.cc,1))}${big('CPC','₹'+m.cpc.toFixed(2),'₹'+m.pcpc.toFixed(2),ar(m.pc),cc(m.pc,-1))}</div><p className="neu" style=${{fontSize:12}}>CTR = total clicks ÷ total impressions × 100. CPC = total spend ÷ total clicks. Campaign percentages are never averaged.</p>`}
+${nEnd>0&&html`<div className="card" style=${{marginTop:12,padding:'12px 16px'}}><${Mx} label="Historical (ended campaigns)" m=${me}/></div>`}<div className="card" style=${{marginTop:12,overflow:'hidden'}}>${ms.length===0&&html`<div className="neu" style=${{padding:24,textAlign:'center'}}>This group has no members.</div>`}
+${ms.map(e=>{const em=X.mt(e),st=e.status;return html`<div key=${e.id} className=${'row '+(st==='Ended'?'end':'')} style=${{display:'grid',gridTemplateColumns:'minmax(200px,3fr) 90px 100px 90px 90px 100px 80px',gap:10,alignItems:'center',padding:'8px 16px'}}>
+<span style=${{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}} title=${e.name}>${e.cid?'Ad set · ':''}${e.name}</span><${Status} s=${st}/><span>${e.obj}</span><span className="r">${em.nodata?'—':em.ctr.toFixed(2)+'%'}</span><span className="r">${em.nodata?'—':'₹'+em.cpc.toFixed(2)}</span><span><${Tag} dq=${e.dq}/></span>
+<button className="btn" style=${{padding:'3px 8px'}} aria-label=${'Remove '+e.name} onClick=${()=>X.setGroups(x=>x.map(y=>y.id===g.id?{...y,members:y.members.filter(i=>i!==e.id)}:y))}>Remove</button></div>`})}</div></div>`}
+return html`<div><${Head} t="Groups" s="Combine campaigns and ad sets to track their blended performance."/>
+${X.groups.length===0?html`<div className="card" style=${{marginTop:18,padding:48,textAlign:'center'}}><p className="neu">No groups yet. Select campaigns in the table and choose Create group.</p><button className="btn pri" onClick=${()=>X.go('cmp')}>Go to Campaigns</button></div>`:html`<div className="card" style=${{marginTop:18,overflow:'hidden'}}>
+<div className="lbl" style=${{display:'grid',gridTemplateColumns:'2fr 80px 110px 90px 90px 90px 90px 90px',gap:10,padding:'10px 16px',background:'#f7f9fc'}}><span>Group</span><span>Members</span><span>Spend</span><span>CTR</span><span>CTR chg</span><span>CPC</span><span>CPC chg</span><span></span></div>
+${X.groups.map(g=>{const m=X.gm(g);return html`<div key=${g.id} className=${'row '+(X.hl===g.id?'sc':'')} style=${{display:'grid',gridTemplateColumns:'2fr 80px 110px 90px 90px 90px 90px 90px',gap:10,alignItems:'center',padding:'10px 16px'}}><span style=${{fontWeight:600}}>${g.name}${X.hl===g.id?' · new':''}</span><span>${g.members.length}</span><span>${m.nodata?'—':'₹'+n0(m.spend)}</span><span>${m.nodata?'—':m.ctr.toFixed(2)+'%'}</span><span className=${m.nodata?'':cc(m.cc,1)}>${m.nodata?'—':ar(m.cc)}</span><span>${m.nodata?'—':'₹'+m.cpc.toFixed(2)}</span><span className=${m.nodata?'':cc(m.pc,-1)}>${m.nodata?'—':ar(m.pc)}</span><button className="btn" onClick=${()=>X.setGid(g.id)}>Open</button></div>`})}</div>`}</div>`}
+function AlertsView(){const X=useContext(Ctx),[open,setOpen]=useState(null);
+const BC={Triggered:'v-Critical','OK':'s-Active','Suppressed':'v-Medium','Paused':'s-Ended','No data':'s-Ended'};
+return html`<div><div style=${{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:12}}><div><h1 style=${{margin:0,fontSize:26}}>Alerts</h1><p style=${{margin:'4px 0 0',color:'#5b6780',fontSize:14}}>Get emailed when CTR or CPC moves against you. Low-data campaigns never trigger alerts.</p></div><button className="btn pri" onClick=${()=>X.setModal({t:'alert'})}>Create alert</button></div>
+${X.alerts.length===0&&html`<div className="card neu" style=${{marginTop:18,padding:48,textAlign:'center'}}>No alerts yet.</div>`}
+<div className="card" style=${{marginTop:18,overflow:'hidden',display:X.alerts.length?'block':'none'}}>${X.alerts.map(a=>{const e=X.evalAlert(a),nm=tName(X,a.tt,a.tid)||'(deleted target)';return html`<div key=${a.id} style=${{borderBottom:'1px solid #eef1f6'}}>
+<div style=${{display:'grid',gridTemplateColumns:'100px minmax(200px,2fr) 1.4fr 1.2fr auto',gap:12,alignItems:'center',padding:'12px 16px'}}><span className=${'bd '+BC[e.state]} style=${{justifySelf:'start'}}>${e.state}</span>
+<span title=${nm} style=${{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}><span className="neu">${a.tt} · </span>${nm}</span><span>${a.metric} ${a.metric==='CTR'?'drops':'rises'} > ${a.th}%</span><span className="neu">${a.email}</span>
+<span style=${{display:'flex',gap:6}}>${e.state==='Triggered'&&html`<button className="btn" onClick=${()=>setOpen(open===a.id?null:a.id)}>${open===a.id?'Hide email':'Email preview'}</button>`}<button className="btn" onClick=${()=>X.setModal({t:'alert',edit:a.id})}>Edit</button><button className="btn" onClick=${()=>X.setAlerts(x=>x.map(y=>y.id===a.id?{...y,on:!y.on}:y))}>${a.on?'Pause':'Resume'}</button><button className="btn" onClick=${()=>{X.setAlerts(x=>x.filter(y=>y.id!==a.id));X.note('Alert deleted')}}>Delete</button></span></div>
+${e.state==='Suppressed'&&html`<div className="neu" style=${{padding:'0 16px 12px',fontSize:12}}>${e.why}</div>`}
+${open===a.id&&e.state==='Triggered'&&html`<div style=${{margin:'0 16px 14px',padding:16,background:'#f7f9fc',border:'1px solid #e3e8ef',borderRadius:8,fontSize:13,lineHeight:1.6}}><div className="neu">To: ${a.email}</div><div><b>Subject:</b> Vajra alert: ${a.metric} ${a.metric==='CTR'?'dropped':'rose'} ${e.val.toFixed(1)}% for ${nm}</div><p style=${{margin:'8px 0 0'}}>${a.metric} moved from ${a.metric==='CTR'?e.m.pctr.toFixed(2)+'% to '+e.m.ctr.toFixed(2)+'%':'₹'+e.m.pcpc.toFixed(2)+' to ₹'+e.m.cpc.toFixed(2)} (${X.cLabel} vs ${X.pLabel}). Your threshold was ${a.th}%. <i>Simulated email, nothing is sent.</i></p></div>`}</div>`})}</div></div>`}
+function SettingsView(){const X=useContext(Ctx),[tab,setTab]=useState('ws');
+const D=[['No data campaign','Adds a campaign with zero delivery. Metrics show “—” and no alert can evaluate.',()=>{X.addDemo('dnd');X.setF({...F0,q:'No_Data'});X.go('cmp');return'Showing the no-data campaign in Campaigns.'}],
+['Campaign without ad sets','Adds a campaign with no ad sets. Expand it to see the empty state.',()=>{X.addDemo('dna');X.setF({...F0,q:'No_AdSets'});X.setExp(e=>({...e,dna:true}));X.go('cmp');return'Expanded the campaign; it has no ad sets.'}],
+['Ended campaign inside a group','Creates a group containing an Ended campaign.',()=>X.demoGroup('gd-ended','Demo · Ended in group',['c16','c0'],'The Ended member is greyed and flagged inside the group.')],
+['Partially selected ad sets','Selects two of three ad sets in one campaign.',()=>{X.setF(F0);X.setSelC({});X.setSelA({c1a0:true,c1a1:true});X.setExp(e=>({...e,c1:true}));X.go('cmp');return'The campaign checkbox shows an indeterminate state.'}],
+['Mixed objectives','Creates a group of Traffic, Conversions and Awareness campaigns.',()=>X.demoGroup('gd-mixed','Demo · Mixed objectives',['c0','c1','c2'],'The group flags mixed objectives; CTR and CPC are still pooled from clicks and impressions.')],
+['Low-data campaign','Creates a CTR-drop alert on a Low data campaign and one on a normal campaign.',()=>{X.setAlerts(a=>[...a.filter(x=>!x.id.startsWith('ad-')),{id:'ad-low',tt:'campaign',tid:'c19',metric:'CTR',th:20,email:'demo@coolnest.in',on:true},{id:'ad-ok',tt:'campaign',tid:'c0',metric:'CTR',th:20,email:'demo@coolnest.in',on:true}]);X.go('alr');return'The low-data alert is Suppressed even though its CTR fell 33%.'}],
+['Incomplete last day','Marks the most recent day as incomplete for several campaigns.',()=>{X.setIncomplete(true);X.go('gov');return'A banner and Data incomplete badges now appear.'}],
+['Learning campaign','Filters to Learning campaigns.',()=>{X.setF({...F0,status:'Learning'});X.go('cmp');return'Showing Learning campaigns.'}],
+['Paused campaign','Filters to Paused campaigns.',()=>{X.setF({...F0,status:'Paused'});X.go('cmp');return'Showing Paused campaigns.'}]];
+return html`<div><h1 style=${{margin:0,fontSize:26}}>Settings</h1><div style=${{display:'flex',gap:4,margin:'16px 0',borderBottom:'1px solid #e3e8ef'}}>${[['ws','Workspace'],['pg','Edge case playground']].map(t=>html`<button key=${t[0]} className=${'nav '+(tab===t[0]?'on':'')} style=${{width:'auto'}} onClick=${()=>setTab(t[0])}>${t[1]}</button>`)}</div>
+${tab==='ws'?html`<div className="card" style=${{padding:20,maxWidth:560}}><div className="lbl">Account</div><p style=${{margin:'4px 0 16px'}}>CoolNest ACs · ${X.camps.length} campaigns · Meta and Google</p><button className="btn" onClick=${X.resetAll}>Reset demo data</button><p className="neu" style=${{fontSize:12}}>Clears groups, selections, filters, extra demo campaigns and restores the sample alert.</p></div>`:html`<div><p className="neu" style=${{marginTop:0}}>Each scenario changes the live prototype data and jumps to where you can see it.</p>
+${X.demoMsg&&html`<div className="card" style=${{padding:'10px 14px',marginBottom:12,background:'#eef2ff'}}><b>Result:</b> ${X.demoMsg}</div>`}
+<div style=${{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:12}}>${D.map(d=>html`<div key=${d[0]} className="card" style=${{padding:16}}><div style=${{fontWeight:600}}>${d[0]}</div><p className="neu" style=${{margin:'6px 0 12px'}}>${d[1]}</p><button className="btn pri" onClick=${()=>X.setDemoMsg(d[2]())}>Run</button></div>`)}</div></div>`}</div>`}
+const EC=({id,t,exp,children})=>html`<div className="card" style=${{padding:20,marginTop:16}}><div style=${{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}><span className="bd s-Learning">${id}</span><span style=${{fontSize:15,fontWeight:700}}>${t}</span></div><p className="neu" style=${{margin:'6px 0 14px'}}><b>Expected:</b> ${exp}</p>${children}</div>`;
+const Mx=({m,label})=>m.nodata?html`<div className="neu">${label}: no data</div>`:html`<div style=${{display:'flex',flexWrap:'wrap',gap:18,alignItems:'baseline'}}><b>${label}</b><span>CTR ${m.ctr.toFixed(2)}% <span className=${cc(m.cc,1)}>${ar(m.cc)}</span></span><span>CPC ₹${m.cpc.toFixed(2)} <span className=${cc(m.pc,-1)}>${ar(m.pc)}</span></span><span className="neu">${n0(m.clicks)} clicks · ${n0(m.imps)} impressions · ₹${n0(m.spend)}</span></div>`;
+function EdgeView(){const X=useContext(Ctx);
+const [src,setSrc]=useState('Meta Ads'),[conn,setConn]=useState(null),[mon,setMon]=useState(false),[selAs,setSelAs]=useState({}),[dups,setDups]=useState(['c0']),[pick,setPick]=useState('c1'),[dm,setDm]=useState(null);
+const c1=X.camps.find(c=>c.id==='c1'),selected=c1.adsets.filter(a=>selAs[a.id]);
+const g3=['c0','c1','c16','c17'].map(i=>X.camps.find(c=>c.id===i)),act=g3.filter(c=>c.status!=='Ended'),end=g3.filter(c=>c.status==='Ended');
+const add=()=>{const c=X.camps.find(x=>x.id===pick);if(dups.includes(pick))setDm({ok:false,t:'“'+c.name+'” already exists in this group. Duplicate not added.'});else{setDups([...dups,pick]);setDm({ok:true,t:'Added “'+c.name+'”.'})}};
+return html`<div><h1 style=${{margin:0,fontSize:26,letterSpacing:'-.02em'}}>Edge cases</h1><p style=${{margin:'4px 0 0',color:'#5b6780',fontSize:14}}>Simulations of five edge cases and how the product responds. They run on their own and don't change your campaigns, groups or alerts.</p>
+<${EC} id="EC-01" t="No data yet" exp="An empty state that explains why there is nothing to show, with a connect/import data CTA.">
+${conn?html`<div style=${{padding:24,border:'1px solid #cfe9db',background:'#e3f6ec',borderRadius:10,textAlign:'center'}}><b>${conn} connected (simulated)</b><p className="neu" style=${{margin:'6px 0 12px'}}>The first sync can take a few hours. Campaigns will appear here once data arrives.</p><button className="btn" onClick=${()=>setConn(null)}>Disconnect and show empty state again</button></div>`:html`<div style=${{padding:32,border:'1.5px dashed #c5cde0',borderRadius:10,textAlign:'center'}}><div style=${{fontSize:16,fontWeight:700}}>No data yet</div><p className="neu" style=${{maxWidth:440,margin:'6px auto 16px'}}>This account has no campaign data. Governance needs at least one connected ad account or an imported report before it can show changes or alerts.</p><div style=${{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}><select className="sel" aria-label="Data source" value=${src} onChange=${e=>setSrc(e.target.value)}><option>Meta Ads</option><option>Google Ads</option><option>CSV import</option></select><button className="btn pri" onClick=${()=>setConn(src)}>${src==='CSV import'?'Import data':'Connect data'}</button></div></div>`}<//>
+<${EC} id="EC-02" t="Campaign has no ad sets" exp="The campaign stays visible with “No ad sets available”, and ad-set-level monitoring is disabled.">
+<div style=${{border:'1px solid #e3e8ef',borderRadius:8,overflow:'hidden'}}><div style=${{padding:'10px 14px',display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}><b>R201/SA/24/998401/00_No_AdSets_Test_Google</b><span className="bd s-Active">Active</span><span>Google · Leads</span></div><div className="neu" style=${{padding:'10px 14px 10px 32px',background:'#fcfaff',borderTop:'1px solid #eef1f6'}}>No ad sets available</div></div>
+<label style=${{display:'flex',gap:8,alignItems:'center',marginTop:12,opacity:.6}}><input type="checkbox" checked=${mon} disabled aria-label="Ad-set-level monitoring"/>Monitor at ad set level <span className="neu">· disabled: this campaign has no ad sets</span></label>
+<div style=${{marginTop:10,display:'flex',gap:8,alignItems:'center'}}><button className="btn" disabled style=${{opacity:.5}}>Create ad set alert</button><button className="btn" onClick=${()=>X.setModal({t:'alert'})}>Create campaign-level alert instead</button></div><//>
+<${EC} id="EC-03" t="Ended campaign inside a group" exp="Ended campaigns stay visible with an Ended status, are excluded from active alerts, and their historical performance is reported separately.">
+<div className="card" style=${{overflow:'hidden'}}>${g3.map(c=>{const e=c.status==='Ended',m=X.mt(c);return html`<div key=${c.id} className=${'row '+(e?'end':'')} style=${{display:'grid',gridTemplateColumns:'minmax(200px,3fr) 90px 90px 90px 190px',gap:10,alignItems:'center',padding:'8px 14px'}}><span className="t" style=${{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}} title=${c.name}>${c.name}</span><${Status} s=${c.status}/><span>CTR ${m.ctr.toFixed(2)}%</span><span>CPC ₹${m.cpc.toFixed(2)}</span><span className=${e?'neu':'pos'}>${e?'Excluded from alerts':'Alert monitoring on'}</span></div>`})}</div>
+<div style=${{display:'grid',gap:8,marginTop:12}}><${Mx} label="Active members" m=${agg(act.map(X.mt))}/><${Mx} label="Historical (ended)" m=${agg(end.map(X.mt))}/></div><//>
+<${EC} id="EC-04" t="Only some ad sets selected" exp="A partial selection is shown clearly, and group metrics are calculated from the selected ad sets only.">
+<div style=${{display:'flex',alignItems:'center',gap:8,marginBottom:8}}><${Cb} checked=${selected.length===c1.adsets.length} indet=${selected.length>0} label="Campaign" onChange=${()=>setSelAs(selected.length===c1.adsets.length?{}:Object.fromEntries(c1.adsets.map(a=>[a.id,true])))}/><b style=${{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>${c1.name}</b><span className=${'bd '+(selected.length&&selected.length<c1.adsets.length?'v-Medium':'s-Learning')}>${selected.length===0?'None selected':selected.length===c1.adsets.length?'All ad sets':'Partial · '+selected.length+' of '+c1.adsets.length+' ad sets'}</span></div>
+${c1.adsets.map(a=>html`<label key=${a.id} style=${{display:'flex',gap:8,alignItems:'center',padding:'6px 0 6px 28px'}}><${Cb} cls="ac" checked=${selAs[a.id]} label=${'Select '+a.name} onChange=${()=>setSelAs(s=>({...s,[a.id]:!s[a.id]}))}/>${a.name}</label>`)}
+<div style=${{marginTop:10}}>${selected.length?html`<${Mx} label="Group metrics (selected ad sets only)" m=${agg(selected.map(X.mt))}/>`:html`<span className="neu">Select at least one ad set to see group metrics.</span>`}</div><//>
+<${EC} id="EC-05" t="Duplicate campaign added to a group" exp="Duplicate entries are prevented and the user is told the campaign already exists in the group.">
+<div style=${{display:'flex',gap:8,flexWrap:'wrap'}}><select className="sel" style=${{maxWidth:420}} aria-label="Campaign to add" value=${pick} onChange=${e=>{setPick(e.target.value);setDm(null)}}>${X.camps.map(c=>html`<option key=${c.id} value=${c.id}>${c.name}</option>`)}</select><button className="btn pri" onClick=${add}>Add to group</button></div>
+${dm&&html`<div role="status" className=${dm.ok?'pos':'neg'} style=${{marginTop:10}}>${dm.t}</div>`}
+<div style=${{marginTop:12,border:'1px solid #e3e8ef',borderRadius:8}}>${dups.map(i=>{const c=X.camps.find(x=>x.id===i);return html`<div key=${i} style=${{display:'flex',justifyContent:'space-between',gap:10,padding:'8px 14px',borderBottom:'1px solid #eef1f6'}}><span style=${{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>${c.name}</span><button className="btn" style=${{padding:'2px 8px'}} onClick=${()=>{setDups(dups.filter(x=>x!==i));setDm(null)}}>Remove</button></div>`})}${dups.length===0&&html`<div className="neu" style=${{padding:14}}>Group is empty.</div>`}</div><//></div>`}
+function EmptyAccount(){const X=useContext(Ctx),[src,setSrc]=useState('Meta Ads');
+return X.conn?html`<div className="card" style=${{marginTop:18,padding:40,textAlign:'center',background:'#e3f6ec',borderColor:'#cfe9db'}}><b>${X.conn} connected (simulated)</b><p className="neu" style=${{margin:'6px 0 14px'}}>The first sync can take a few hours. Campaigns will appear here once data arrives.</p><button className="btn" onClick=${()=>{X.setConn(null);X.setAcct('CoolNest ACs')}}>Switch back to CoolNest ACs</button></div>`:html`<div className="card" style=${{marginTop:18,padding:48,textAlign:'center',border:'1.5px dashed #c5cde0'}}><div style=${{fontSize:16,fontWeight:700}}>No data yet</div><p className="neu" style=${{maxWidth:460,margin:'6px auto 16px'}}>${X.acct} has no campaign data. Governance needs a connected ad account or an imported report before it can show changes, attention items or alerts.</p><div style=${{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}><select className="sel" aria-label="Data source" value=${src} onChange=${e=>setSrc(e.target.value)}><option>Meta Ads</option><option>Google Ads</option><option>CSV import</option></select><button className="btn pri" onClick=${()=>X.setConn(src)}>${src==='CSV import'?'Import data':'Connect data'}</button></div></div>`}
+function AddGroupModal(){const X=useContext(Ctx),[gid,setG]=useState((X.groups[0]||{}).id||''),[msg,setMsg]=useState(null);const n=X.camps.filter(c=>X.selC[c.id]).length+X.adsAll.filter(a=>X.selA[a.id]).length;
+return html`<div className="ov"><div className="card" style=${{width:460,maxWidth:'94vw',padding:22}}><h2 style=${{margin:0,fontSize:17}}>Add to group</h2>${X.groups.length===0?html`<p className="neu">No groups yet. Use Create group first.</p>`:html`<label style=${{display:'block',marginTop:14}}><div className="lbl">Group</div><select className="sel" style=${{width:'100%'}} value=${gid} onChange=${e=>{setG(e.target.value);setMsg(null)}}>${X.groups.map(g=>html`<option key=${g.id} value=${g.id}>${g.name} (${g.members.length})</option>`)}</select></label><p className="neu">${n} item(s) selected. Items already in the group are skipped.</p>${msg&&html`<div role="alert" className="neg">${msg.t}</div>`}`}
+<div style=${{display:'flex',justifyContent:'flex-end',gap:8,marginTop:16}}><button className="btn" onClick=${()=>X.setModal(null)}>Cancel</button><button className="btn pri" disabled=${X.groups.length===0} style=${{opacity:X.groups.length?1:.5}} onClick=${()=>{const r=X.addToGroup(gid);if(!r.ok)setMsg(r)}}>Add to group</button></div></div></div>`}
+const NAVS=[['ov','Overview','M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z'],['cmp','Campaigns','M4 6h16M4 12h16M4 18h10'],['gov','Governance','M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z'],['grp','Groups','M12 12a3 3 0 100-6 3 3 0 000 6zM4 20c0-4 3.5-6 8-6s8 2 8 6'],['alr','Alerts','M6 9a6 6 0 1112 0c0 6 2 7 2 7H4s2-1 2-7zM10 20h4'],['set','Settings','M4 7h10M18 7h2M4 17h2M10 17h10M14 5v4M6 15v4'],['edge','Edge cases','M12 3l9 16H3zM12 10v4M12 17h.01']];
+const SEED=[{id:'a0',tt:'campaign',tid:'c0',metric:'CTR',th:20,email:'planner@coolnest.in',on:true}];
+function App(){
+const [nav,setNav]=useState('gov'),[F,setF]=useState(F0),[D,setD]=useState({preset:'7',cFrom:'2026-10-24',cTo:'2026-10-30',pFrom:'2026-10-17',pTo:'2026-10-23'}),[sort,setSort]=useState({k:'cc',d:1}),[exp,setExp]=useState({}),[selC,setSelC]=useState({}),[selA,setSelA]=useState({}),[groups,setGroups]=useState([]),[alerts,setAlerts]=useState(SEED),[modal,setModal]=useState(null),[review,setReview]=useState(null),[gid,setGid]=useState(null),[hl,setHl]=useState(null),[demo,setDemo]=useState([]),[incomplete,setIncomplete]=useState(false),[toast,setToast]=useState(''),[acct,setAcct]=useState('CoolNest ACs'),[conn,setConn]=useState(null),[demoMsg,setDemoMsg]=useState('');
+const note=m=>{setToast(m);setTimeout(()=>setToast(''),2400)};
+const go=n=>{setNav(n);setGid(null);setHl(null);window.scrollTo(0,0)};
+const tg=(set,id)=>set(x=>({...x,[id]:!x[id]}));
+const camps=[...CAMPS,...demo],adsAll=camps.flatMap(c=>c.adsets);
+const days=Math.max(1,diff(D.cTo,D.cFrom)+1),pdays=Math.max(1,diff(D.pTo,D.pFrom)+1);
+const mt=e=>calc(e,days/7,pdays/7,days===7?0:((e.ci*3+days)%7-3)*.004);
+const dqOf=c=>incomplete&&c.i<5&&c.dq==='Good'?'Data incomplete':c.dq;
+const all=camps.map(c=>{const m=mt(c),dq=dqOf(c);return{c,m,dq,st:c.status,w:m.nodata?0:Math.max(-m.cc,m.pc),sev:sevOf(dq,m,c.status)}});
+const pf=all.filter(a=>F.platform==='All'||a.c.plat===F.platform);
+const attn=pf.filter(a=>a.sev).sort((a,b)=>b.w-a.w);
+const key={name:a=>a.c.name,plat:a=>a.c.plat,obj:a=>a.c.obj,status:a=>a.st,spend:a=>a.m.spend||0,ctr:a=>a.m.ctr||0,pctr:a=>a.c.pctr,cc:a=>a.m.cc||0,cpc:a=>a.m.cpc||0,pcpc:a=>a.c.pcpc,pc:a=>a.m.pc||0}[sort.k];
+const rows=pf.filter(a=>(F.objective==='All'||a.c.obj===F.objective)&&(F.status==='All'||a.st===F.status)&&(F.dq==='All'||a.dq===F.dq)&&(!F.q||a.c.name.toLowerCase().includes(F.q.toLowerCase()))&&(F.perf==='All'||(!a.m.nodata&&(F.perf==='sig'?a.w>=15:F.perf==='dec'?a.w>=5:a.m.cc>0&&a.m.pc<0)))).sort((a,b)=>{const x=key(a),y=key(b);return(x>y?1:x<y?-1:0)*sort.d});
+const ent=id=>camps.find(c=>c.id===id)||adsAll.find(a=>a.id===id);
+const gMembers=g=>{const ids=g.members.filter(i=>ent(i));return ids.filter(i=>{const e=ent(i);return !(e.cid&&ids.includes(e.cid))}).map(ent)};
+const gm=g=>agg(gMembers(g).filter(e=>e.status!=='Ended').map(mt));const gmEnded=g=>agg(gMembers(g).filter(e=>e.status==='Ended').map(mt));
+const evalAlert=a=>{if(!a.on)return{state:'Paused'};let ms;if(a.tt==='group'){const g=groups.find(x=>x.id===a.tid);const mem=g?gMembers(g):[];const ok=mem.filter(e=>e.dq!=='Low data'&&e.status!=='Ended');if(mem.length&&!ok.length)return{state:'Suppressed',why:'All members are low-data or ended campaigns, so this alert never triggers.'};ms=agg(ok.map(mt))}else{const e=ent(a.tid);if(!e)return{state:'No data'};if(e.dq==='Low data')return{state:'Suppressed',why:'Low-data campaigns never trigger alerts, even when the change crosses the threshold.'};if(e.status==='Ended')return{state:'Suppressed',why:'Ended campaigns are excluded from active alerts.'};ms=mt(e)}
+if(ms.nodata)return{state:'No data'};const val=a.metric==='CTR'?-ms.cc:ms.pc;return{state:val>a.th?'Triggered':'OK',val,m:ms}};
+const trig=alerts.filter(a=>evalAlert(a).state==='Triggered').length;
+const tot=pf.reduce((s,a)=>s+(a.m.spend||0),0),pt=pf.reduce((s,a)=>s+(a.m.pspend||0),0);
+const k={total:pf.length,totalSub:pf.filter(a=>a.c.plat==='Meta').length+' Meta · '+pf.filter(a=>a.c.plat==='Google').length+' Google',active:pf.filter(a=>a.st==='Active').length,activeSub:['Learning','Paused','Ended'].map(s=>pf.filter(a=>a.st===s).length+' '+s.toLowerCase()).join(' · '),attn:attn.length,alerts:trig,spend:inr(tot),spendSub:ar((tot-pt)/pt*100)+' vs previous period'};
+const saveGroup=name=>{const g={id:'g'+Date.now(),name,members:[...Object.keys(selC).filter(i=>selC[i]),...Object.keys(selA).filter(i=>selA[i])]};setGroups(x=>[...x,g]);setSelC({});setSelA({});setModal(null);setNav('grp');setGid(null);setHl(g.id);note('Group “'+name+'” created')};
+const saveAlert=a=>{setAlerts(x=>x.some(y=>y.id===a.id)?x.map(y=>y.id===a.id?a:y):[...x,a]);setModal(null);go('alr');note('Alert saved')};
+const addDemo=id=>setDemo(d=>d.some(c=>c.id===id)?d:[...d,id==='dnd'?{i:100,ci:100,id,name:'R200/OT/24/998400/00_No_Data_Test_Meta',plat:'Meta',obj:'Traffic',status:'Active',spend:0,pspend:0,ctr:0,pctr:0,cpc:0,pcpc:0,dq:'No data',adsets:[]}:{i:101,id,name:'R201/SA/24/998401/00_No_AdSets_Test_Google',plat:'Google',obj:'Leads',status:'Active',spend:41200,pspend:39800,ctr:2.1,pctr:2.0,cpc:19.5,pcpc:19.9,dq:'Good',adsets:[]}]);
+const demoGroup=(id,name,members,msg)=>{setGroups(g=>[...g.filter(x=>x.id!==id),{id,name,members}]);go('grp');setGid(id);return msg};
+const addToGroup=gid=>{const g=groups.find(x=>x.id===gid);const sel=[...Object.keys(selC).filter(i=>selC[i]),...Object.keys(selA).filter(i=>selA[i])];const nameOf=i=>(ent(i)||{}).name;const isDup=i=>{const e=ent(i);return g.members.includes(i)||(e&&e.cid&&g.members.includes(e.cid))};const fresh=sel.filter(i=>!isDup(i)),dup=sel.filter(isDup);if(fresh.length===0)return{ok:false,t:dup.length===1?'“'+nameOf(dup[0])+'” already exists in this group. Nothing was added.':dup.length+' selected items already exist in this group. Nothing was added.'};setGroups(x=>x.map(y=>y.id===gid?{...y,members:[...y.members,...fresh]}:y));setSelC({});setSelA({});setModal(null);note('Added '+fresh.length+' to “'+g.name+'”'+(dup.length?' · '+dup.length+' already in group, skipped':''));return{ok:true}};
+const resetAll=()=>{setF(F0);setD({preset:'7',cFrom:'2026-10-24',cTo:'2026-10-30',pFrom:'2026-10-17',pTo:'2026-10-23'});setExp({});setSelC({});setSelA({});setGroups([]);setAlerts(SEED);setDemo([]);setIncomplete(false);setDemoMsg('');note('Demo data reset')};
+const nC=Object.values(selC).filter(Boolean).length,nA=Object.values(selA).filter(Boolean).length;
+const X={nav,F,setF,D,setD,sort,setSort,exp,setExp,selC,setSelC,selA,setSelA,groups,setGroups,alerts,setAlerts,modal,setModal,review,setReview,gid,setGid,hl,tg,camps,adsAll,mt,all,rows,attn,k,go,note,saveGroup,saveAlert,addDemo,demoGroup,resetAll,gMembers,gm,gmEnded,evalAlert,acct,setAcct,conn,setConn,addToGroup,demoMsg,setDemoMsg,setIncomplete,
+cLabel:D.preset!=='custom'?'Last '+days+' days':fd(D.cFrom)+' – '+fd(D.cTo),pLabel:D.preset!=='custom'?'Previous '+pdays+' days':fd(D.pFrom)+' – '+fd(D.pTo)};
+const banner=incomplete&&html`<div className="card" style=${{marginTop:14,padding:'10px 16px',background:'#fdf1dc',color:'#8a5208',display:'flex',justifyContent:'space-between'}}><span><b>Last day incomplete:</b> ${fd('2026-10-30')} data is still arriving. Affected campaigns show a Data incomplete badge.</span><button className="btn" onClick=${()=>setIncomplete(false)}>Dismiss</button></div>`;
+const view={gov:html`<div><${Head} t="Governance" s="Monitor performance, identify changes and act before problems escalate."/><${Dates}/>${banner}<${Kpis}/><${Attention}/><${TableCard}/></div>`,
+ov:html`<div><${Head} t="Overview" s="Account performance at a glance."/><${Dates}/>${banner}<${Kpis}/><${Attention}/><div style=${{marginTop:14}}><button className="btn pri" onClick=${()=>go('gov')}>Open Governance</button></div></div>`,
+cmp:html`<div><${Head} t="Campaigns" s="All campaigns and ad sets. Select rows to group them."/><${Dates}/>${banner}<${TableCard}/></div>`,
+grp:html`<${GroupsView}/>`,alr:html`<${AlertsView}/>`,set:html`<${SettingsView}/>`,edge:html`<${EdgeView}/>`}[nav];
+const shown=acct!=='CoolNest ACs'&&['gov','ov','cmp'].includes(nav)?html`<div><${Head} t=${NAVS.find(n=>n[0]===nav)[1]} s="This account has no campaign data yet."/><${EmptyAccount}/></div>`:view;
+return html`<${Ctx.Provider} value=${X}><div style=${{display:'flex',flexWrap:'wrap',minHeight:'100vh',background:'#f5f7fa'}}>
+<aside style=${{flex:'0 0 220px',background:'#fff',borderRight:'1px solid #e3e8ef',padding:'18px 12px',boxSizing:'border-box'}}><div style=${{display:'flex',alignItems:'center',gap:9,padding:'4px 8px 22px'}}><div style=${{width:28,height:28,borderRadius:7,background:'#0f1c3f',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700}}>V</div><span style=${{fontSize:18,fontWeight:700}}>Vajra</span></div>
+<nav style=${{display:'flex',flexDirection:'column',gap:3}}>${NAVS.map(n=>html`<button key=${n[0]} className=${'nav '+(nav===n[0]?'on':'')} aria-current=${nav===n[0]?'page':undefined} onClick=${()=>go(n[0])}><svg viewBox="0 0 24 24" aria-hidden="true"><path d=${n[2]}/></svg>${n[1]}${n[0]==='alr'&&trig>0?html`<span className="bd v-Critical" style=${{marginLeft:'auto'}}>${trig}</span>`:''}</button>`)}</nav></aside>
+<main style=${{flex:'999 1 560px',minWidth:0,padding:'24px 28px '+(nC+nA?96:48)+'px',boxSizing:'border-box'}}>${shown}</main></div>
+${nC+nA>0&&html`<div style=${{position:'fixed',left:220,right:0,bottom:0,zIndex:40,background:'#0f1c3f',color:'#fff',padding:'12px 28px',display:'flex',flexWrap:'wrap',gap:14,alignItems:'center',boxShadow:'0 -6px 20px rgba(15,28,63,.2)'}}><b>${nC} campaign${nC===1?'':'s'}</b><span>·</span><b style=${{color:'#d8c2ff'}}>${nA} ad set${nA===1?'':'s'}</b><span>selected</span><span style=${{marginLeft:'auto',display:'flex',gap:8}}><button className="btn" onClick=${()=>{setSelC({});setSelA({})}}>Clear selection</button><button className="btn" onClick=${()=>setModal({t:'addgroup'})}>Add to group</button><button className="btn pri" style=${{background:'#fff',color:'#0f1c3f'}} onClick=${()=>setModal({t:'group'})}>Create group</button></span></div>`}
+${modal&&modal.t==='group'&&html`<${GroupModal}/>`}${modal&&modal.t==='addgroup'&&html`<${AddGroupModal}/>`}${modal&&modal.t==='alert'&&html`<${AlertModal} key=${modal.edit||'new'}/>`}<${Detail}/>
+${toast&&html`<div style=${{position:'fixed',bottom:84,left:'50%',transform:'translateX(-50%)',background:'#0f1c3f',color:'#fff',padding:'10px 18px',borderRadius:8,zIndex:70}}>${toast}</div>`}<//>`}
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script></body></html>
